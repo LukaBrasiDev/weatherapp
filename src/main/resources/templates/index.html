@@ -6,15 +6,24 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body>
+<div style="text-align: center;">
+    <form th:action="@{/}" method="post">
+        <input name="cityName" type="text" placeholder="Podaj nazwę">
+        <button type="submit" value="Wyślij" class="btn btn-primary">Wyślij</button>
+    </form>
+
+    <h1>Temperatura aktualna</h1>
+
+    <span th:if="${weather != null}" th:text="${weather.getMain().getTemp() + ' ' + weather.getMain().getPressure()}"></span>
+    <span th:if="${weather != null}" th:text="${weather.getClouds().getClouds()}"></span>
 
 
-<span th:if="${weather != null}" th:text="${weather.getMain().getTemp()}"></span>
-<span th:if="${weather != null}" th:text="${weather.getMain().getPressure()}"></span>
-<span th:if="${weather != null}" th:text="${weather.getClouds().getClouds()}"></span>
+    <h1>Temperatura na 5 dni</h1>
 
-<form th:action="@{/}" method="post">
-    <input name="cityName" type="text" placeholder="Podaj miasto...">
-    <button type="submit" value="Wyślij"></button>
-</form>
+    <ul th:if="${forecast != null}">
+        <li th:each="weatherAsDay : ${forecast.getListOfWeather()}" th:text="${weatherAsDay.getDate() + ': ' + weatherAsDay.getMain().getTemp()}"></li>
+    </ul>
+
+</div>
 </body>
 </html>

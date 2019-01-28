@@ -25,8 +25,10 @@ public class WelcomeController {
     }
 
     @PostMapping("/")
-    public String index(@RequestParam("cityName") String cityName, Model model) {
-        model.addAttribute("weather",weatherLogService.getWeather(cityName));
+    public String index(@RequestParam("cityName") String cityName,
+                        Model model) {
+        model.addAttribute("weather", weatherLogService.getCurrentWeather(cityName));
+        model.addAttribute("forecast", weatherLogService.getForecastWeather(cityName));
         return "index";
     }
 }
