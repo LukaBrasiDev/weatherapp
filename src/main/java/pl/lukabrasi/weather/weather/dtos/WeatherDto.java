@@ -9,8 +9,12 @@ public class WeatherDto {
     private TemperatureDto main;
     private CloudsDto clouds;
 
+
     @JsonProperty("dt_txt")
     private String date;
+
+    @JsonProperty("name")
+    private String cityName;
 
     @Data
     public static class TemperatureDto {

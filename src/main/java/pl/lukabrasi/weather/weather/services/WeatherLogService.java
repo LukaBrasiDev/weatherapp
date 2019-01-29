@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pl.lukabrasi.weather.weather.controllers.WelcomeController;
 import pl.lukabrasi.weather.weather.dtos.ForecastWeatherDto;
 import pl.lukabrasi.weather.weather.dtos.WeatherDto;
 import pl.lukabrasi.weather.weather.entities.WeatherLogEntity;
+import pl.lukabrasi.weather.weather.mappers.WeatherDtoToWeatherEntityMapper;
 import pl.lukabrasi.weather.weather.repositories.WeatherLogRepository;
 
 @Service
@@ -26,22 +28,17 @@ public class WeatherLogService {
     }
 
 
-    // {
-    // "klucz":"wartosc",
-    // "klucz2": {
-    //              "klucz1": "wartosc1"
-    //           }
-    // }";
+    public boolean saveWeatherLog(WeatherDto weatherDto) {
+        WeatherLogEntity weatherLogEntity = WeatherDtoToWeatherEntityMapper.convert(weatherDto);
+        return weatherLogRepository.save(weatherLogEntity) != null;
+    }
 
-
-    //będę ją wywoływal Controllera
-//    public boolean saveWeatherLog(WeatherForm weatherForm){
-//        return weatherLogRepository.save(new WeatherLogEntity(weatherForm)) != null;
-//    }
 
     public WeatherDto getCurrentWeather(String cityName) {
         RestTemplate restTemplate = getRestTemplate();
-        return restTemplate.getForObject("http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=" + apiKey, WeatherDto.class);
+        WeatherDto weatherDto = restTemplate.getForObject("http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=" + apiKey, WeatherDto.class);
+        saveWeatherLog(weatherDto);
+        return weatherDto;
     }
 
     public ForecastWeatherDto getForecastWeather(String cityName) {

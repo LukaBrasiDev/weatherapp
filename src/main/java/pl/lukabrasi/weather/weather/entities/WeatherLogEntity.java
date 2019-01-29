@@ -3,26 +3,14 @@ package pl.lukabrasi.weather.weather.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "weatjer_log")
+@Table(name = "weather_log")
 public class WeatherLogEntity {
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column (name = "city_name")
-    private String cityName;
-
-    @Column (name = "city_temp")
-    private String cityTemp;
-
-    @Column (name = "timestamp")
-    private float timestamp;
-
-
-
+    private @Id @GeneratedValue int id;
+    private @Column(name = "city_name") String cityName;
+    private @Column(name = "city_temp") double cityTemp;
+    private @Column(name = "query_time") LocalDateTime queryTime;
 }
